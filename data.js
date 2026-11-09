@@ -4,6 +4,12 @@ const TRIP = {
   start: '2027-01-02T00:00:00+09:00',
 };
 
+// 멤버 코드네임
+const MEMBERS = ['코1', '코2', '이1'];
+
+// 프라이빗 메모 (Notion). 민감정보·현지 메모는 사이트가 아니라 여기에
+const PRIVATE_NOTE_URL = 'https://app.notion.com/p/f35cc46d5f5382e0ac62013894bae959?v=69bcc46d5f538327a88e88d7a1b4f5bc';
+
 // 준비물: 그룹별 항목. id 는 체크 저장 키로 쓰이므로 바꾸지 않는다.
 const PACKING = [
   {
@@ -44,10 +50,12 @@ const DAYS = [
     date: '01.02 (토)',
     title: 'Day 1 · 출국 · 오사카',
     items: [
-      { time: '00:00', title: '인천 출발', note: '' },
-      { time: '00:00', title: '간사이 도착 · 입국', note: 'Visit Japan Web QR' },
+      { time: '07:30', title: '인천 출발', note: '코1 · 이1' },
+      { time: '08:00', title: '대구 출발', note: '코2 · TW509' },
+      { time: '09:15', title: '간사이 도착 · 입국', note: '코1 · 이1 · Visit Japan Web QR' },
+      { time: '09:30', title: '간사이 T1 도착 · 입국', note: '코2 · 입국 후 공항에서 합류' },
       { time: '00:00', title: '시내 이동', note: '' },
-      { time: '15:00', title: '숙소 체크인', note: '' },
+      { time: '16:00', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시' },
       { time: '저녁', title: '저녁 식사', note: '미정' },
     ],
   },
@@ -75,10 +83,12 @@ const DAYS = [
     date: '01.05 (화)',
     title: 'Day 4 · 귀국',
     items: [
-      { time: '11:00', title: '숙소 체크아웃', note: '' },
+      { time: '10:00', title: '숙소 체크아웃', note: '' },
       { time: '00:00', title: '공항 이동', note: '' },
-      { time: '00:00', title: '간사이 출발', note: '' },
-      { time: '00:00', title: '인천 도착', note: '' },
+      { time: '19:20', title: '간사이 T1 출발', note: '코2 · TW314' },
+      { time: '19:50', title: '간사이 출발', note: '코1 · 이1' },
+      { time: '20:55', title: '대구 도착', note: '코2' },
+      { time: '21:50', title: '인천 도착', note: '코1 · 이1' },
     ],
   },
 ];

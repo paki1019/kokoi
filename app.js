@@ -35,6 +35,20 @@ function renderCountdown() {
   else el.textContent = '여행 끝';
 }
 
+// ----- 멤버 -----
+function renderMembers() {
+  document.getElementById('members').innerHTML =
+    MEMBERS.map((m) => `<span class="chip">${esc(m)}</span>`).join('');
+}
+
+// ----- 프라이빗 메모 링크 -----
+function renderPrivateNote() {
+  const a = document.getElementById('private-note');
+  if (!PRIVATE_NOTE_URL) return;
+  a.href = PRIVATE_NOTE_URL;
+  a.hidden = false;
+}
+
 // ----- 준비물 -----
 function loadChecked() {
   try {
@@ -110,6 +124,8 @@ function renderDays() {
 
 // ----- init -----
 renderCountdown();
+renderMembers();
+renderPrivateNote();
 renderPacking();
 renderDays();
 activateTab(location.hash.slice(1));
