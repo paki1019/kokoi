@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>코코이 · 오사카 · 교토 · 나라 2027.01.02 – 01.05</title>
+  <meta name="description" content="1월 2일부터 5일까지 오사카 · 교토 · 나라 여행 계획">
+  <meta name="theme-color" content="#f6f1e8">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <p class="hero__eyebrow">2027.01.02 (토) – 01.05 (화) · 3박 4일</p>
+    <h1 class="hero__title">코코이 <span class="hero__sub">오사카 · 교토 · 나라</span></h1>
+    <p class="hero__countdown" id="countdown"></p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="여행 계획 탭">
+    <a class="tab" role="tab" href="#plan" data-tab="plan">출발 계획</a>
+    <a class="tab" role="tab" href="#packing" data-tab="packing">준비물</a>
+    <a class="tab" role="tab" href="#days" data-tab="days">일자별 계획</a>
+  </nav>
+
+  <main>
+    <!-- 출발 계획 -->
+    <section class="panel" id="plan" role="tabpanel">
+      <h2>출발 계획</h2>
+
+      <h3>항공</h3>
+      <table class="info">
+        <tbody>
+          <tr><th>가는 편</th><td>01.02 (토) 00:00 ICN → 00:00 KIX · 항공편 미정</td></tr>
+          <tr><th>오는 편</th><td>01.05 (화) 00:00 KIX → 00:00 ICN · 항공편 미정</td></tr>
+          <tr><th>예약 번호</th><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>숙소</h3>
+      <table class="info">
+        <tbody>
+          <tr><th>숙소명</th><td>미정</td></tr>
+          <tr><th>주소</th><td>—</td></tr>
+          <tr><th>체크인 / 아웃</th><td>01.02 15:00 / 01.05 11:00</td></tr>
+          <tr><th>예약 번호</th><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>출발 당일 동선</h3>
+      <ol class="timeline">
+        <li><time>00:00</time> 집 출발</li>
+        <li><time>00:00</time> 공항 도착 · 체크인</li>
+        <li><time>00:00</time> 출국 심사</li>
+        <li><time>00:00</time> 탑승</li>
+      </ol>
+
+      <h3>메모</h3>
+      <ul class="notes">
+        <li>Visit Japan Web 사전 등록 (QR 캡처해 두기)</li>
+        <li>환전 · 해외 결제 카드 확인</li>
+        <li>eSIM / 포켓 와이파이</li>
+      </ul>
+    </section>
+
+    <!-- 준비물 -->
+    <section class="panel" id="packing" role="tabpanel">
+      <h2>출발 전 준비물</h2>
+      <p class="hint">체크 상태는 이 브라우저에만 저장됩니다.</p>
+      <div id="packing-list"></div>
+      <button class="btn-reset" id="packing-reset" type="button">체크 초기화</button>
+    </section>
+
+    <!-- 일자별 계획 -->
+    <section class="panel" id="days" role="tabpanel">
+      <h2>일자별 계획</h2>
+      <div id="days-list"></div>
+    </section>
+  </main>
+
+  <footer class="foot">코코이 · 2027 오사카 · 교토 · 나라</footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
