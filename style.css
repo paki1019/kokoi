@@ -89,6 +89,8 @@ body {
   flex-wrap: wrap;
 }
 .chip {
+  font: inherit;
+  cursor: pointer;
   padding: 2px 10px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -97,6 +99,12 @@ body {
   font-size: 13px;
   font-weight: 600;
 }
+.chip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+[hidden] { display: none !important; }
 
 .hero__tools {
   position: absolute;
@@ -219,6 +227,23 @@ main {
   font-weight: 600;
 }
 
+/* guide list */
+.guide {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.guide li {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.guide li:last-child { border-bottom: 0; }
+
 /* timeline */
 .timeline {
   list-style: none;
@@ -308,32 +333,8 @@ main {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 12px;
-  margin-bottom: 12px;
-  padding: 0 14px;
+  padding: 4px 14px;
 }
-.day summary {
-  cursor: pointer;
-  padding: 14px 0;
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  list-style: none;
-}
-.day summary::-webkit-details-marker { display: none; }
-.day summary::after {
-  content: '＋';
-  margin-left: auto;
-  color: var(--muted);
-}
-.day[open] summary::after { content: '－'; }
-.day__date {
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 14px;
-  white-space: nowrap;
-}
-.day__title { font-weight: 700; }
-.day .timeline { padding-bottom: 8px; }
 
 .foot {
   text-align: center;

@@ -1,7 +1,7 @@
 // 모드·탭 전환 · 준비물 체크 · 일정 렌더링
 
-// 탭 id → 모드 (before: 준비, trip: 여행)
-const TABS = { packing: 'before', depart: 'before', return: 'before', days: 'trip', stay: 'trip' };
+// 탭 id → 모드 (before: 준비, trip: 여행). 날짜별 탭(day1 …)은 renderDays 가 추가한다
+const TABS = { packing: 'before', depart: 'before', return: 'before', guide: 'before', stay: 'trip' };
 const STORAGE_KEY = 'kokoi.packing';
 
 function esc(s) {
@@ -10,7 +10,13 @@ function esc(s) {
 
 // ----- 탭 -----
 const PHASE_KEY = 'kokoi.phase';
-const FIRST_TAB = { before: 'packing', trip: 'days' };
+
+// 모드의 첫 탭. 여행 모드는 여행 중이면 오늘 날짜 탭, 아니면 첫날
+function firstTab(phase) {
+  if (phase !== 'trip') return 'packing';
+  const idx = Math.floor((new Date() - new Date(TRIP.start)) / 86400000);
+  return `day${idx >= 0 && idx < DAYS.length ? idx + 1 : 1}`;
+}
 
 // 날짜 기준 모드: 출발일 전에는 준비, 이후에는 여행
 function datePhase() {
@@ -25,7 +31,7 @@ function defaultTab() {
   } catch {
     /* 저장 불가 환경이면 날짜 기준 */
   }
-  return FIRST_TAB[pinned] || FIRST_TAB[datePhase()];
+  return firstTab(pinned === 'before' || pinned === 'trip' ? pinned : datePhase());
 }
 
 // 토글을 누르면 그 모드로 고정. 날짜 기준 모드와 같으면 고정을 풀어 자동 전환을 살린다
@@ -42,7 +48,8 @@ document.querySelectorAll('.phase').forEach((el) => {
 });
 
 function activateTab(name) {
-  const tab = Object.hasOwn(TABS, name) ? name : defaultTab();
+  // 해시가 모드 이름(#trip)이면 그 모드의 첫 탭
+  const tab = Object.hasOwn(TABS, name) ? name : name === 'trip' || name === 'before' ? firstTab(name) : defaultTab();
   const phase = TABS[tab];
   document.querySelectorAll('.phase').forEach((el) => {
     el.classList.toggle('is-active', el.dataset.phase === phase);
@@ -73,10 +80,51 @@ function renderCountdown() {
   else el.textContent = '여행 끝';
 }
 
-// ----- 멤버 -----
+// ----- 멤버 필터 -----
+// 멤버 칩을 누르면 그 멤버의 일정만 보인다. 다시 누르면 해제. 선택은 이 브라우저에 저장
+const MEMBER_KEY = 'kokoi.member';
+
+function loadMember() {
+  try {
+    const m = localStorage.getItem(MEMBER_KEY);
+    return MEMBERS.includes(m) ? m : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveMember(m) {
+  try {
+    if (m) localStorage.setItem(MEMBER_KEY, m);
+    else localStorage.removeItem(MEMBER_KEY);
+  } catch {
+    /* 저장 불가 환경이면 무시 */
+  }
+}
+
+function applyMember(member) {
+  document.querySelectorAll('#members .chip').forEach((el) => {
+    const on = el.dataset.member === member;
+    el.classList.toggle('is-active', on);
+    el.setAttribute('aria-pressed', on);
+  });
+  // data-who 가 있는 요소는 해당 멤버가 아니면 숨긴다
+  document.querySelectorAll('[data-who]').forEach((el) => {
+    el.hidden = Boolean(member) && !el.dataset.who.split(' ').includes(member);
+  });
+}
+
 function renderMembers() {
-  document.getElementById('members').innerHTML =
-    MEMBERS.map((m) => `<span class="chip">${esc(m)}</span>`).join('');
+  const root = document.getElementById('members');
+  root.innerHTML = MEMBERS.map((m) =>
+    `<button class="chip" type="button" data-member="${esc(m)}">${esc(m)}</button>`).join('');
+  root.querySelectorAll('.chip').forEach((el) => {
+    el.addEventListener('click', () => {
+      const next = loadMember() === el.dataset.member ? null : el.dataset.member;
+      saveMember(next);
+      applyMember(next);
+    });
+  });
 }
 
 // ----- 프라이빗 메모 링크 -----
@@ -143,21 +191,31 @@ document.getElementById('packing-reset').addEventListener('click', () => {
 
 // ----- 일자별 -----
 function renderDays() {
-  const root = document.getElementById('days-list');
-  root.innerHTML = DAYS.map((d, idx) => `
-    <details class="day" ${idx === 0 ? 'open' : ''}>
-      <summary><span class="day__date">${esc(d.date)}</span><span class="day__title">${esc(d.title)}</span></summary>
-      <ol class="timeline">
-        ${d.items.map((it) => `
-          <li>
-            <time>${esc(it.time)}</time>
-            <div>
-              <div>${esc(it.title)}</div>
-              ${it.note ? `<small>${esc(it.note)}</small>` : ''}
-            </div>
-          </li>`).join('')}
-      </ol>
-    </details>`).join('');
+  const stayTab = document.querySelector('.tab[data-tab="stay"]');
+  const stayPanel = document.getElementById('panel-stay');
+  DAYS.forEach((d, idx) => {
+    const id = `day${idx + 1}`;
+    TABS[id] = 'trip';
+    stayTab.insertAdjacentHTML('beforebegin',
+      `<a class="tab" role="tab" href="#${id}" data-tab="${id}" data-phase="trip">${esc(d.tab)}</a>`);
+    stayPanel.insertAdjacentHTML('beforebegin', `
+      <section class="panel" id="panel-${id}" role="tabpanel">
+        <h2>${esc(d.title)}</h2>
+        <p class="hint">${esc(d.date)}</p>
+        <ol class="timeline day">
+          ${d.items.map((it) => `
+            <li ${it.who ? `data-who="${esc(it.who.join(' '))}"` : ''}>
+              <time>${esc(it.time)}</time>
+              <div>
+                <div>${esc(it.title)}</div>
+                ${it.who || it.note ? `<small>${esc([it.who && it.who.join(' · '), it.note].filter(Boolean).join(' · '))}</small>` : ''}
+                ${it.map ? `<small><a href="${esc(it.map)}" target="_blank" rel="noopener">📍 지도</a></small>` : ''}
+                ${it.guide ? `<small><a href="${esc(it.guide)}" target="_blank" rel="noopener">📖 가이드</a></small>` : ''}
+              </div>
+            </li>`).join('')}
+        </ol>
+      </section>`);
+  });
 }
 
 // ----- init -----
@@ -166,4 +224,5 @@ renderMembers();
 renderPrivateNote();
 renderPacking();
 renderDays();
+applyMember(loadMember());
 activateTab(location.hash.slice(1));
