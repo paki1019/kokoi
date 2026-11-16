@@ -1,6 +1,7 @@
-// 탭 전환 · 준비물 체크 · 일자별 계획 렌더링
+// 모드·탭 전환 · 준비물 체크 · 일정 렌더링
 
-const TABS = ['plan', 'packing', 'days'];
+// 탭 id → 모드 (before: 준비, trip: 여행)
+const TABS = { packing: 'before', depart: 'before', return: 'before', days: 'trip', stay: 'trip' };
 const STORAGE_KEY = 'kokoi.packing';
 
 function esc(s) {
@@ -8,15 +9,52 @@ function esc(s) {
 }
 
 // ----- 탭 -----
+const PHASE_KEY = 'kokoi.phase';
+const FIRST_TAB = { before: 'packing', trip: 'days' };
+
+// 날짜 기준 모드: 출발일 전에는 준비, 이후에는 여행
+function datePhase() {
+  return new Date() < new Date(TRIP.start) ? 'before' : 'trip';
+}
+
+// 해시가 없으면 토글로 고정한 모드, 없으면 날짜 기준 모드를 연다
+function defaultTab() {
+  let pinned = null;
+  try {
+    pinned = localStorage.getItem(PHASE_KEY);
+  } catch {
+    /* 저장 불가 환경이면 날짜 기준 */
+  }
+  return FIRST_TAB[pinned] || FIRST_TAB[datePhase()];
+}
+
+// 토글을 누르면 그 모드로 고정. 날짜 기준 모드와 같으면 고정을 풀어 자동 전환을 살린다
+document.querySelectorAll('.phase').forEach((el) => {
+  el.addEventListener('click', () => {
+    const phase = el.dataset.phase;
+    try {
+      if (phase === datePhase()) localStorage.removeItem(PHASE_KEY);
+      else localStorage.setItem(PHASE_KEY, phase);
+    } catch {
+      /* 저장 불가 환경이면 무시 */
+    }
+  });
+});
+
 function activateTab(name) {
-  const tab = TABS.includes(name) ? name : TABS[0];
+  const tab = Object.hasOwn(TABS, name) ? name : defaultTab();
+  const phase = TABS[tab];
+  document.querySelectorAll('.phase').forEach((el) => {
+    el.classList.toggle('is-active', el.dataset.phase === phase);
+  });
   document.querySelectorAll('.tab').forEach((el) => {
     const on = el.dataset.tab === tab;
+    el.hidden = el.dataset.phase !== phase;
     el.classList.toggle('is-active', on);
     el.setAttribute('aria-selected', on);
   });
   document.querySelectorAll('.panel').forEach((el) => {
-    el.hidden = el.id !== tab;
+    el.hidden = el.id !== `panel-${tab}`;
   });
 }
 
