@@ -16,8 +16,7 @@ const PACKING = [
     group: '미리 할 일',
     // 시간순. 괄호 안은 권장 시점
     items: [
-      { id: 'baggage', label: '위탁 수하물 포함 여부 확인 (지금, 코2)' },
-      { id: 'tw-card', label: '트래블월렛 카드 발급 (지금, 배송 5영업일)' },
+      { id: 'tw-card', label: '트래블월렛 카드 발급 (지금, 코1 · 배송 5영업일)' },
       { id: 'insurance', label: '여행자 보험 (출발 2주 전)' },
       { id: 'esim', label: 'eSIM 구매 (출발 1주 전)' },
       { id: 'vjw', label: 'Visit Japan Web 등록 · QR 캡처 (출발 3일 전)' },
