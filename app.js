@@ -2,8 +2,8 @@
 
 // 탭 id → 모드 (before: 준비, trip: 여행, guide: 가이드). 날짜별 탭(day1 …)은 renderDays 가 추가한다
 const TABS = {
-  packing: 'before', depart: 'before', return: 'before', stay: 'trip',
-  'g-wallet': 'guide', 'g-vjw': 'guide', 'g-cash': 'guide', 'g-icoca': 'guide',
+  packing: 'before', depart: 'before', return: 'before',
+  'g-wallet': 'guide', 'g-vjw': 'guide', 'g-cash': 'guide', 'g-icoca': 'guide', stay: 'guide',
 };
 const STORAGE_KEY = 'kokoi.packing';
 
@@ -197,16 +197,16 @@ document.getElementById('packing-reset').addEventListener('click', () => {
 
 // ----- 일자별 -----
 function renderDays() {
-  const stayTab = document.querySelector('.tab[data-tab="stay"]');
-  const stayPanel = document.getElementById('panel-stay');
+  const anchorTab = document.querySelector('.tab[data-phase="guide"]');
+  const anchorPanel = document.getElementById('panel-stay');
   DAYS.forEach((d, idx) => {
     const id = `day${idx + 1}`;
     TABS[id] = 'trip';
-    stayTab.insertAdjacentHTML('beforebegin',
+    anchorTab.insertAdjacentHTML('beforebegin',
       `<a class="tab" role="tab" href="#${id}" data-tab="${id}" data-phase="trip">${esc(d.tab)}</a>`);
-    stayPanel.insertAdjacentHTML('beforebegin', `
+    anchorPanel.insertAdjacentHTML('beforebegin', `
       <section class="panel" id="panel-${id}" role="tabpanel">
-        <h2>${esc(d.title)}</h2>
+        <h2 class="day-title">${esc(d.title)}${d.guide ? `<a class="day-guide" href="${esc(d.guide)}" target="_blank" rel="noopener" aria-label="${esc(d.title)} 가이드" title="가이드">📖</a>` : ''}</h2>
         <p class="hint">${esc(d.date)}</p>
         <ol class="timeline day">
           ${d.items.map((it) => `
