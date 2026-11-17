@@ -10,16 +10,16 @@ const MEMBERS = ['코1', '코2', '이1'];
 // 프라이빗 메모 (Notion). 민감정보·현지 메모는 사이트가 아니라 여기에
 const PRIVATE_NOTE_URL = 'https://app.notion.com/p/f35cc46d5f5382e0ac62013894bae959?v=69bcc46d5f538327a88e88d7a1b4f5bc';
 
-// 체크리스트: 그룹별 항목. id 는 체크 저장 키로 쓰이므로 바꾸지 않는다.
+// 체크리스트: 그룹별 항목. id 는 체크 저장 키로 쓰이므로 바꾸지 않는다. guide 는 가이드 탭 링크 (선택)
 const PACKING = [
   {
     group: '미리 할 일',
     // 시간순. 괄호 안은 권장 시점
     items: [
-      { id: 'tw-card', label: '트래블월렛 카드 발급 (지금, 코1 · 배송 5영업일)' },
+      { id: 'tw-card', label: '트래블월렛 카드 발급 (지금, 코1 · 배송 5영업일)', guide: '#g-wallet' },
       { id: 'insurance', label: '여행자 보험 (출발 2주 전)' },
       { id: 'esim', label: 'eSIM 구매 (출발 1주 전)' },
-      { id: 'vjw', label: 'Visit Japan Web 등록 · QR 캡처 (출발 3일 전)' },
+      { id: 'vjw', label: 'Visit Japan Web 등록 · QR 캡처 (출발 3일 전)', guide: '#g-vjw' },
       { id: 'stay-mail', label: '숙소 출입문 비밀번호 수신 확인 (출발 2일 전, 예약자)' },
       { id: 'checkin', label: '온라인 체크인 (출발 하루 전, 항공사 앱)' },
     ],
@@ -42,6 +42,7 @@ const MEET_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%8D%97%E6%B
 
 // 시내 이동 가이드 (Notion): 간사이공항역 → 숙소
 const CITY_GUIDE = 'https://app.notion.com/p/41acc46d5f5381d188bcd56444408b50';
+const RINKU_GUIDE = 'https://app.notion.com/p/41bcc46d5f538186acf4fffcef387d97';
 
 // 일자별 계획. tab 은 탭 이름. items 는 { time, title, note, who, map, guide } 배열.
 // who 는 해당 멤버 (없으면 전원), map 은 지도 링크, guide 는 가이드 링크 (모두 선택)
@@ -53,10 +54,10 @@ const DAYS = [
     items: [
       { time: '07:30', title: '인천 출발', note: '', who: ['코1', '이1'] },
       { time: '08:00', title: '대구 출발', note: 'TW509', who: ['코2'] },
-      { time: '09:15', title: '간사이 T2 도착 · 입국', note: 'Visit Japan Web QR · 입국 후 셔틀로 공항역 (7 – 9분)', who: ['코1', '이1'] },
-      { time: '09:30', title: '간사이 T1 도착 · 입국', note: '입국 후 걸어서 공항역 (2층 직결)', who: ['코2'] },
+      { time: '09:15', title: '간사이 T2 도착 · 입국', note: 'Visit Japan Web QR · 입국 후 셔틀로 공항역 (7 – 9분)', who: ['코1', '이1'], guide: '#g-vjw' },
+      { time: '09:30', title: '간사이 T1 도착 · 입국', note: 'Visit Japan Web QR · 입국 후 걸어서 공항역 (2층 직결)', who: ['코2'], guide: '#g-vjw' },
       { time: '10:15', title: '난카이선 개찰구 앞 집합', note: '간사이공항역 · JR 개찰구 아님', map: MEET_MAP },
-      { time: '10:20', title: 'ICOCA 구매', note: '공항역 JR 매표기 (파란색) · 1인 1장 2,000엔 · 현금만' },
+      { time: '10:20', title: 'ICOCA 구매', note: '공항역 JR 매표기 (파란색) · 1인 1장 2,000엔 · 현금만', guide: '#g-icoca' },
       { time: '10:30', title: '시내 이동', note: '난카이 공항급행 → 난바 · 약 45분 · 970엔 · ICOCA 로 탑승', guide: CITY_GUIDE },
       { time: '11:30', title: '숙소 1층 짐 보관', note: '셀프 보관 · 선착순 · 캐리어 잠그기' },
       { time: '16:00', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시' },
@@ -91,8 +92,12 @@ const DAYS = [
     title: 'Day 4 · 귀국',
     items: [
       { time: '10:00', title: '숙소 체크아웃', note: '' },
-      { time: '00:00', title: '공항 이동', note: '' },
-      { time: '00:00', title: '난카이선 개찰구 앞 해산', note: '코2 는 걸어서 T1 · 코1 이1 은 에어로플라자 앞 셔틀로 T2 (7 – 9분)', map: MEET_MAP },
+      { time: '10:30', title: '난카이 난바역 → 린쿠타운역', note: '공항급행 · 환승 없음 · 약 40분 · 820엔', guide: RINKU_GUIDE },
+      { time: '11:30', title: '점심 · 린쿠 프리미엄 아울렛', note: '' },
+      { time: '13:00', title: '돈키호테 린쿠점', note: '' },
+      { time: '14:00', title: '센슈노유 온천', note: '수건 대여 100엔 · 목욕 수건 200엔' },
+      { time: '16:30', title: '린쿠타운역 → 간사이공항역', note: '공항급행 · 6분 · 370엔', guide: RINKU_GUIDE },
+      { time: '16:40', title: '난카이선 개찰구 앞 해산', note: '코2 는 걸어서 T1 · 코1 이1 은 에어로플라자 앞 셔틀로 T2 (7 – 9분)', map: MEET_MAP },
       { time: '19:20', title: '간사이 T1 출발', note: 'TW314', who: ['코2'] },
       { time: '19:50', title: '간사이 T2 출발', note: '', who: ['코1', '이1'] },
       { time: '20:55', title: '대구 도착', note: '', who: ['코2'] },

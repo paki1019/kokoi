@@ -1,7 +1,10 @@
 // 모드·탭 전환 · 준비물 체크 · 일정 렌더링
 
-// 탭 id → 모드 (before: 준비, trip: 여행). 날짜별 탭(day1 …)은 renderDays 가 추가한다
-const TABS = { packing: 'before', depart: 'before', return: 'before', guide: 'before', stay: 'trip' };
+// 탭 id → 모드 (before: 준비, trip: 여행, guide: 가이드). 날짜별 탭(day1 …)은 renderDays 가 추가한다
+const TABS = {
+  packing: 'before', depart: 'before', return: 'before', stay: 'trip',
+  'g-wallet': 'guide', 'g-vjw': 'guide', 'g-cash': 'guide', 'g-icoca': 'guide',
+};
 const STORAGE_KEY = 'kokoi.packing';
 
 function esc(s) {
@@ -13,6 +16,7 @@ const PHASE_KEY = 'kokoi.phase';
 
 // 모드의 첫 탭. 여행 모드는 여행 중이면 오늘 날짜 탭, 아니면 첫날
 function firstTab(phase) {
+  if (phase === 'guide') return 'g-wallet';
   if (phase !== 'trip') return 'packing';
   const idx = Math.floor((new Date() - new Date(TRIP.start)) / 86400000);
   return `day${idx >= 0 && idx < DAYS.length ? idx + 1 : 1}`;
@@ -34,10 +38,11 @@ function defaultTab() {
   return firstTab(pinned === 'before' || pinned === 'trip' ? pinned : datePhase());
 }
 
-// 토글을 누르면 그 모드로 고정. 날짜 기준 모드와 같으면 고정을 풀어 자동 전환을 살린다
+// 준비 · 여행 토글을 누르면 그 모드로 고정. 날짜 기준 모드와 같으면 고정을 풀어 자동 전환을 살린다. 가이드는 고정하지 않는다
 document.querySelectorAll('.phase').forEach((el) => {
   el.addEventListener('click', () => {
     const phase = el.dataset.phase;
+    if (phase === 'guide') return;
     try {
       if (phase === datePhase()) localStorage.removeItem(PHASE_KEY);
       else localStorage.setItem(PHASE_KEY, phase);
@@ -49,7 +54,7 @@ document.querySelectorAll('.phase').forEach((el) => {
 
 function activateTab(name) {
   // 해시가 모드 이름(#trip)이면 그 모드의 첫 탭
-  const tab = Object.hasOwn(TABS, name) ? name : name === 'trip' || name === 'before' ? firstTab(name) : defaultTab();
+  const tab = Object.hasOwn(TABS, name) ? name : name === 'trip' || name === 'before' || name === 'guide' ? firstTab(name) : defaultTab();
   const phase = TABS[tab];
   document.querySelectorAll('.phase').forEach((el) => {
     el.classList.toggle('is-active', el.dataset.phase === phase);
@@ -169,6 +174,7 @@ function renderPacking() {
                 <input type="checkbox" data-id="${esc(i.id)}" ${checked.has(i.id) ? 'checked' : ''}>
                 <span>${esc(i.label)}</span>
               </label>
+              ${i.guide ? `<a class="check-guide" href="${esc(i.guide)}">📖 가이드</a>` : ''}
             </li>`).join('')}
         </ul>
       </section>`;
@@ -210,7 +216,7 @@ function renderDays() {
                 <div>${esc(it.title)}</div>
                 ${it.who || it.note ? `<small>${esc([it.who && it.who.join(' · '), it.note].filter(Boolean).join(' · '))}</small>` : ''}
                 ${it.map ? `<small><a href="${esc(it.map)}" target="_blank" rel="noopener">📍 지도</a></small>` : ''}
-                ${it.guide ? `<small><a href="${esc(it.guide)}" target="_blank" rel="noopener">📖 가이드</a></small>` : ''}
+                ${it.guide ? `<small><a href="${esc(it.guide)}"${it.guide.startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>📖 가이드</a></small>` : ''}
               </div>
             </li>`).join('')}
         </ol>

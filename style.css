@@ -289,7 +289,18 @@ main {
   border-radius: 12px;
   overflow: hidden;
 }
-.checklist li { border-bottom: 1px solid var(--line); }
+.checklist li {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.checklist label { flex: 1; }
+.check-guide {
+  flex-shrink: 0;
+  padding: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
 .checklist li:last-child { border-bottom: 0; }
 .checklist label {
   display: flex;
