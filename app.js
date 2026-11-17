@@ -215,14 +215,29 @@ function renderDays() {
               <div>
                 <div>${esc(it.title)}</div>
                 ${it.who || it.note ? `<small>${esc([it.who && it.who.join(' · '), it.note].filter(Boolean).join(' · '))}</small>` : ''}
-                ${it.map ? `<small><a href="${esc(it.map)}" target="_blank" rel="noopener">📍 지도</a></small>` : ''}
-                ${it.guide ? `<small><a href="${esc(it.guide)}"${it.guide.startsWith('#') ? '' : ' target="_blank" rel="noopener"'}>📖 가이드</a></small>` : ''}
               </div>
+              ${it.map || it.guide ? `<div class="links">
+                <span class="links__items" hidden>
+                  ${it.map ? `<a href="${esc(it.map)}" target="_blank" rel="noopener" aria-label="지도" title="지도">📍</a>` : ''}
+                  ${it.guide ? `<a href="${esc(it.guide)}"${it.guide.startsWith('#') ? '' : ' target="_blank" rel="noopener"'} aria-label="가이드" title="가이드">📖</a>` : ''}
+                </span>
+                <button class="more" type="button" aria-expanded="false" aria-label="지도 · 가이드 열기">⋯</button>
+              </div>` : ''}
             </li>`).join('')}
         </ol>
       </section>`);
   });
 }
+
+// 일정 오른쪽 ⋯ 버튼: 지도 · 가이드 버튼을 그 왼쪽에 펼치거나 접는다
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.more');
+  if (!btn) return;
+  const items = btn.previousElementSibling;
+  items.hidden = !items.hidden;
+  btn.setAttribute('aria-expanded', !items.hidden);
+  btn.textContent = items.hidden ? '⋯' : '×';
+});
 
 // ----- init -----
 renderCountdown();

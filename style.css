@@ -252,7 +252,7 @@ main {
 }
 .timeline li {
   display: grid;
-  grid-template-columns: 56px 1fr;
+  grid-template-columns: 56px 1fr auto;
   gap: 12px;
   padding: 10px 0;
   border-bottom: 1px dashed var(--line);
@@ -270,6 +270,34 @@ main {
   color: var(--muted);
   font-size: 13px;
   margin-top: 2px;
+}
+.timeline .links,
+.timeline .links__items {
+  display: flex;
+  gap: 6px;
+  align-self: start;
+}
+.timeline .links a,
+.timeline .more {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.timeline .more {
+  width: 28px;
+  border: 0;
+  background: none;
+  font-size: 20px;
 }
 
 /* checklist */

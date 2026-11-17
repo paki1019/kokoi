@@ -40,9 +40,20 @@ const PACKING = [
 // 집합 · 해산 장소: 간사이공항역 난카이선 개찰구
 const MEET_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%8D%97%E6%B5%B7+%E9%96%A2%E8%A5%BF%E7%A9%BA%E6%B8%AF%E9%A7%85+%E6%94%B9%E6%9C%AD';
 
-// 시내 이동 가이드 (Notion): 간사이공항역 → 숙소
+// 목적지 지도 (구글 지도 검색)
+const STAY_MAP = 'https://www.google.com/maps/search/?api=1&query=BON+Condo+Namba+Nipponbashi+1-8-17+Nipponbashi+Chuo-ku+Osaka';
+const NAMBA_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%8D%97%E6%B5%B7+%E3%81%AA%E3%82%93%E3%81%B0%E9%A7%85';
+const RINKU_STATION_MAP = 'https://www.google.com/maps/search/?api=1&query=%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E3%82%BF%E3%82%A6%E3%83%B3%E9%A7%85';
+const OUTLET_MAP = 'https://www.google.com/maps/search/?api=1&query=%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0%E3%83%BB%E3%82%A2%E3%82%A6%E3%83%88%E3%83%AC%E3%83%83%E3%83%88';
+const DONKI_MAP = 'https://www.google.com/maps/search/?api=1&query=%E3%83%89%E3%83%B3%E3%83%BB%E3%82%AD%E3%83%9B%E3%83%BC%E3%83%86+%E3%82%8A%E3%82%93%E3%81%8F%E3%81%86%E5%BA%97';
+const ONSEN_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%84%B6%E6%B8%A9%E6%B3%89+%E6%B3%89%E5%B7%9E%E3%81%AE%E6%B9%AF+%E9%96%A2%E8%A5%BF%E7%A9%BA%E6%B8%AF';
+
+// 가이드 (Notion). 시내 이동: 간사이공항역 → 숙소
 const CITY_GUIDE = 'https://app.notion.com/p/41acc46d5f5381d188bcd56444408b50';
 const RINKU_GUIDE = 'https://app.notion.com/p/41bcc46d5f538186acf4fffcef387d97';
+const DONKI_GUIDE = 'https://app.notion.com/p/41bcc46d5f53811694fbfaa3574284f7';
+const ONSEN_GUIDE = 'https://app.notion.com/p/41bcc46d5f53813d89b5ed67cb704860';
+const OUTLET_GUIDE = 'https://app.notion.com/p/41bcc46d5f538156bdedde6e4fcb4d43';
 
 // 일자별 계획. tab 은 탭 이름. items 는 { time, title, note, who, map, guide } 배열.
 // who 는 해당 멤버 (없으면 전원), map 은 지도 링크, guide 는 가이드 링크 (모두 선택)
@@ -59,8 +70,8 @@ const DAYS = [
       { time: '10:15', title: '난카이선 개찰구 앞 집합', note: '간사이공항역 · JR 개찰구 아님', map: MEET_MAP },
       { time: '10:20', title: 'ICOCA 구매', note: '공항역 JR 매표기 (파란색) · 1인 1장 2,000엔 · 현금만', guide: '#g-icoca' },
       { time: '10:30', title: '시내 이동', note: '난카이 공항급행 → 난바 · 약 45분 · 970엔 · ICOCA 로 탑승', guide: CITY_GUIDE },
-      { time: '11:30', title: '숙소 1층 짐 보관', note: '셀프 보관 · 선착순 · 캐리어 잠그기' },
-      { time: '16:00', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시' },
+      { time: '11:30', title: '숙소 1층 짐 보관', note: '셀프 보관 · 선착순 · 캐리어 잠그기', map: STAY_MAP },
+      { time: '16:00', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시', map: STAY_MAP },
       { time: '저녁', title: '저녁 식사', note: '미정' },
     ],
   },
@@ -92,11 +103,11 @@ const DAYS = [
     title: 'Day 4 · 귀국',
     items: [
       { time: '10:00', title: '숙소 체크아웃', note: '' },
-      { time: '10:30', title: '난카이 난바역 → 린쿠타운역', note: '공항급행 · 환승 없음 · 약 40분 · 820엔', guide: RINKU_GUIDE },
-      { time: '11:30', title: '점심 · 린쿠 프리미엄 아울렛', note: '' },
-      { time: '13:00', title: '돈키호테 린쿠점', note: '' },
-      { time: '14:00', title: '센슈노유 온천', note: '수건 대여 100엔 · 목욕 수건 200엔' },
-      { time: '16:30', title: '린쿠타운역 → 간사이공항역', note: '공항급행 · 6분 · 370엔', guide: RINKU_GUIDE },
+      { time: '10:30', title: '난카이 난바역 → 린쿠타운역', note: '공항급행 · 환승 없음 · 약 40분 · 820엔', map: NAMBA_MAP, guide: RINKU_GUIDE },
+      { time: '11:30', title: '점심 · 린쿠 프리미엄 아울렛', note: '역에서 도보 약 6분 · 10:00 – 20:00', map: OUTLET_MAP, guide: OUTLET_GUIDE },
+      { time: '13:00', title: '돈키호테 린쿠점', note: '역에서 도보 약 5분', map: DONKI_MAP, guide: DONKI_GUIDE },
+      { time: '14:00', title: '센슈노유 온천', note: '수건 대여 100엔 · 목욕 수건 200엔', map: ONSEN_MAP, guide: ONSEN_GUIDE },
+      { time: '16:30', title: '린쿠타운역 → 간사이공항역', note: '공항급행 · 6분 · 370엔', map: RINKU_STATION_MAP, guide: RINKU_GUIDE },
       { time: '16:40', title: '난카이선 개찰구 앞 해산', note: '코2 는 걸어서 T1 · 코1 이1 은 에어로플라자 앞 셔틀로 T2 (7 – 9분)', map: MEET_MAP },
       { time: '19:20', title: '간사이 T1 출발', note: 'TW314', who: ['코2'] },
       { time: '19:50', title: '간사이 T2 출발', note: '', who: ['코1', '이1'] },
