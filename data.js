@@ -61,6 +61,11 @@ const TODAIJI_MAP = 'https://www.google.com/maps/search/?api=1&query=%E6%9D%B1%E
 const KASUGA_MAP = 'https://www.google.com/maps/search/?api=1&query=%E6%98%A5%E6%97%A5%E5%A4%A7%E7%A4%BE';
 const NARAMACHI_MAP = 'https://www.google.com/maps/search/?api=1&query=%E3%81%AA%E3%82%89%E3%81%BE%E3%81%A1';
 const KINTETSU_NARA_MAP = 'https://www.google.com/maps/search/?api=1&query=%E8%BF%91%E9%89%84%E5%A5%88%E8%89%AF%E9%A7%85';
+const KAIYUKAN_MAP = 'https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E9%81%8A%E9%A4%A8';
+const OSAKAKO_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E9%98%AA%E6%B8%AF%E9%A7%85';
+const TEMPOZAN_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E4%BF%9D%E5%B1%B1%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%83%E3%83%88%E3%83%97%E3%83%AC%E3%83%BC%E3%82%B9';
+const FERRIS_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E4%BF%9D%E5%B1%B1%E5%A4%A7%E8%A6%B3%E8%A6%A7%E8%BB%8A';
+const KUROFUNE_MAP = 'https://maps.app.goo.gl/PuFcE52hLrw4FQUUA';
 const ONSEN_MAP = 'https://www.google.com/maps/search/?api=1&query=%E5%A4%A9%E7%84%B6%E6%B8%A9%E6%B3%89+%E6%B3%89%E5%B7%9E%E3%81%AE%E6%B9%AF+%E9%96%A2%E8%A5%BF%E7%A9%BA%E6%B8%AF';
 
 // 가이드 (Notion). 시내 이동: 간사이공항역 → 숙소
@@ -74,10 +79,15 @@ const NARA_GUIDE = 'https://app.notion.com/p/41bcc46d5f538144bfddfeae0cf71515';
 const KUOE_GUIDE = 'https://app.notion.com/p/41bcc46d5f538164945adecae9bd161c';
 const KYOTO_MOVE_GUIDE = 'https://app.notion.com/p/41bcc46d5f53812492dbfa38934dcff3';
 const NARA_MOVE_GUIDE = 'https://app.notion.com/p/41bcc46d5f5381d4acb8de365d700dc1';
+const KAIYUKAN_GUIDE = 'https://app.notion.com/p/41dcc46d5f5381daaf06efe12ec73f6e';
+const KAIYUKAN_MOVE_GUIDE = 'https://app.notion.com/p/41dcc46d5f53814c9918d3c59d8ec552';
+const OSAKAKO_GUIDE = 'https://app.notion.com/p/41dcc46d5f538174a61ad94e3560285e';
+const KUROFUNE_GUIDE = 'https://app.notion.com/p/41dcc46d5f5381729e78d65cbda8605e';
 const DAY1_GUIDE = 'https://app.notion.com/p/41acc46d5f5381039c0ee89d7b7ab9a8';
 const DAY4_GUIDE = 'https://app.notion.com/p/41acc46d5f5381539854d900c8421e2a';
 
-// 일자별 계획. tab 은 탭 이름, guide 는 그날 계획 (Notion) 링크로 제목 옆 버튼이 된다. items 는 { time, title, note, who, map, guide } 배열.
+// 일자별 계획. tab 은 탭 이름, guide 는 그날 계획 (Notion) 링크로 제목 옆 버튼이 된다.
+// info 는 그날 방문할 곳 정보 { title, tag, lines, map, guide } 배열 (선택). 일정 아래 '정보' 섹션이 된다. items 는 { time, title, note, who, map, guide } 배열.
 // who 는 해당 멤버 (없으면 전원), map 은 지도 링크, guide 는 가이드 링크 (모두 선택)
 const DAYS = [
   {
@@ -94,8 +104,59 @@ const DAYS = [
       { time: '10:20', title: 'ICOCA 구매', note: '공항역 JR 매표기 (파란색) · 1인 1장 2,000엔 · 현금만', guide: '#g-icoca' },
       { time: '10:30', title: '시내 이동', note: '난카이 공항급행 → 난바 · 약 45분 · 970엔 · ICOCA 로 탑승', guide: CITY_GUIDE },
       { time: '11:30', title: '숙소 1층 짐 보관', note: '셀프 보관 · 선착순 · 캐리어 잠그기', map: STAY_MAP, guide: '#stay' },
-      { time: '16:00', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시', map: STAY_MAP, guide: '#stay' },
-      { time: '저녁', title: '저녁 식사', note: '미정' },
+      { time: '12:00', title: '점심 · 장어 덮밥', note: 'Dotonbori Kurofune · 센니치마에 · 영업 미확인', map: KUROFUNE_MAP, guide: KUROFUNE_GUIDE },
+      { time: '13:20', title: '닛폰바시역 → 오사카코역', note: '사카이스지선 → 주오선 (사카이스지혼마치 환승) · 약 25분 · 290엔', map: NIPPONBASHI_MAP, guide: KAIYUKAN_MOVE_GUIDE },
+      { time: '14:00', title: '가이유칸 (오사카 수족관)', note: '10:00 – 20:00 · 성인 2,700엔 안팎 · 연초 영업 미확인', map: KAIYUKAN_MAP, guide: KAIYUKAN_GUIDE },
+      { time: '16:30', title: '오사카코역 → 닛폰바시역', note: '약 25분 · 290엔', map: OSAKAKO_MAP, guide: KAIYUKAN_MOVE_GUIDE },
+      { time: '17:15', title: '숙소 체크인', note: 'BON 콘도 난바 니혼바시', map: STAY_MAP, guide: '#stay' },
+      { time: '저녁', title: '저녁 · 우설', note: '가게 미정' },
+    ],
+    info: [
+      {
+        title: '장어 덮밥 · Dotonbori Kurofune',
+        tag: '초안',
+        lines: [
+          '센니치마에 1-8-18 2층',
+          '영업시간 · 가격 · 예약 여부 확인 필요',
+        ],
+        map: KUROFUNE_MAP,
+        guide: KUROFUNE_GUIDE,
+      },
+      {
+        title: '가이유칸 (오사카 수족관)',
+        tag: '확정',
+        lines: [
+          '오사카코역에서 도보 약 5분',
+          '10:00 – 20:00 · 입장은 폐관 1시간 전까지',
+          '성인 2,700엔 안팎 · 날짜별 변동 요금',
+          '관람 2 – 3시간',
+          '01.02 영업 · 요금은 공식 사이트에서 확인 필요',
+        ],
+        map: KAIYUKAN_MAP,
+        guide: KAIYUKAN_GUIDE,
+      },
+      {
+        title: '나니와 구이신보 요코초',
+        tag: '선택',
+        lines: [
+          '덴포잔 마켓플레이스 안 · 가이유칸 바로 옆',
+          '옛 오사카 골목을 재현한 먹거리 거리 · 오코노미야키 · 양식',
+          '11:00 – 20:00',
+        ],
+        map: TEMPOZAN_MAP,
+        guide: OSAKAKO_GUIDE,
+      },
+      {
+        title: '덴포잔 대관람차',
+        tag: '선택',
+        lines: [
+          '한 바퀴 약 15분',
+          '10:00 – 21:00 · 토일 공휴일 22:00 까지',
+          '900엔 또는 1,000엔 (자료마다 다름)',
+        ],
+        map: FERRIS_MAP,
+        guide: OSAKAKO_GUIDE,
+      },
     ],
   },
   {
@@ -117,6 +178,61 @@ const DAYS = [
       { time: '19:30', title: '기온시조역 → 닛폰바시역', note: '게이한으로 기타하마역 → 사카이스지선', map: GIONSHIJO_MAP, guide: KYOTO_MOVE_GUIDE },
       { time: '21:00', title: '야식 · 도톤보리', note: '미정', map: DOTONBORI_MAP },
     ],
+    info: [
+      {
+        title: '후시미이나리 신사',
+        tag: '초안',
+        lines: [
+          '후시미이나리역에서 바로',
+          '새해 연휴라 연중 가장 붐빔 · 피크 10:00 – 16:00',
+          '참배 시간 · 요금 미확인',
+        ],
+        map: FUSHIMI_MAP,
+        guide: KYOTO_GUIDE,
+      },
+      {
+        title: '기요미즈데라',
+        tag: '초안',
+        lines: [
+          '기요미즈고조역에서 오르막 도보',
+          '06:00 – 18:00',
+          '성인 500엔',
+        ],
+        map: KIYOMIZU_MAP,
+        guide: KYOTO_GUIDE,
+      },
+      {
+        title: '산넨자카 · 야사카 신사 · 기온',
+        tag: '초안',
+        lines: [
+          '기요미즈데라에서 걸어 내려가는 길',
+        ],
+        map: GION_MAP,
+        guide: KYOTO_GUIDE,
+      },
+      {
+        title: 'KUOE KYOTO 본점',
+        tag: '초안',
+        lines: [
+          '시계 매장 · 데라마치 산조',
+          '11:00 – 18:00 (17:30 표기도 있음) · 화요일 휴무',
+          '예약 불필요',
+          '01.03 영업 여부 확인 필요',
+        ],
+        map: KUOE_MAP,
+        guide: KUOE_GUIDE,
+      },
+      {
+        title: '니시키 시장',
+        tag: '초안',
+        lines: [
+          '01.01 – 01.03 은 쉬는 점포 많음',
+          '비면 가와라마치 · 폰토초 산책',
+        ],
+        map: NISHIKI_MAP,
+        guide: KYOTO_GUIDE,
+      },
+    ],
   },
   {
     date: '01.04 (월)',
@@ -136,6 +252,59 @@ const DAYS = [
       { time: '19:00', title: '긴테쓰나라역 → 긴테쓰닛폰바시역', note: '약 40분 · 680엔', map: KINTETSU_NARA_MAP, guide: NARA_MOVE_GUIDE },
       { time: '21:00', title: '야식 · 난바', note: '미정' },
     ],
+    info: [
+      {
+        title: '나라공원 · 사슴',
+        tag: '초안',
+        lines: [
+          '긴테쓰나라역에서 도보 약 8분',
+        ],
+        map: NARA_PARK_MAP,
+        guide: NARA_GUIDE,
+      },
+      {
+        title: '고후쿠지',
+        tag: '초안',
+        lines: [
+          '긴테쓰나라역에서 도보 5 – 10분',
+          '오층탑은 수리 중일 수 있음 (미확인)',
+          '시간 · 요금 미확인',
+        ],
+        map: KOFUKUJI_MAP,
+        guide: NARA_GUIDE,
+      },
+      {
+        title: '도다이지 대불전',
+        tag: '초안',
+        lines: [
+          '긴테쓰나라역에서 도보 약 20분',
+          '08:00 – 17:00 · 최종 입관 16:30',
+          '성인 800엔',
+        ],
+        map: TODAIJI_MAP,
+        guide: NARA_GUIDE,
+      },
+      {
+        title: '가스가타이샤',
+        tag: '초안',
+        lines: [
+          '긴테쓰나라역에서 도보 약 25분',
+          '시간 · 요금 미확인',
+        ],
+        map: KASUGA_MAP,
+        guide: NARA_GUIDE,
+      },
+      {
+        title: '나라마치',
+        tag: '초안',
+        lines: [
+          '옛 거리 산책 · 카페',
+          '연초 휴무 점포 있을 수 있음',
+        ],
+        map: NARAMACHI_MAP,
+        guide: NARA_GUIDE,
+      },
+    ],
   },
   {
     date: '01.05 (화)',
@@ -154,6 +323,43 @@ const DAYS = [
       { time: '19:50', title: '간사이 T2 출발', note: '', who: ['코1', '이1'] },
       { time: '20:55', title: '대구 도착', note: '', who: ['코2'] },
       { time: '21:50', title: '인천 도착', note: '', who: ['코1', '이1'] },
+    ],
+    info: [
+      {
+        title: '린쿠 프리미엄 아울렛',
+        tag: '확정',
+        lines: [
+          '린쿠타운역에서 도보 약 6분',
+          '10:00 – 20:00 · 연초 변동 가능',
+          '약 210개 매장 · 푸드코트 있음',
+        ],
+        map: OUTLET_MAP,
+        guide: OUTLET_GUIDE,
+      },
+      {
+        title: '돈키호테 린쿠점',
+        tag: '확정',
+        lines: [
+          '린쿠타운역에서 도보 약 5분 · 니토리 쇼핑센터 1층',
+          '09:00 – 익일 01:00',
+          '코1 · 이1 은 기내 수하물만 · 액체 100ml 이하 · 술 불가',
+        ],
+        map: DONKI_MAP,
+        guide: DONKI_GUIDE,
+      },
+      {
+        title: '센슈노유 온천',
+        tag: '확정',
+        lines: [
+          '린쿠타운역에서 도보 약 8분',
+          '07:00 – 24:00 · 최종 입장 23:30',
+          '평일 900엔 · 연말연시는 특별 요금',
+          '수건 100엔 · 목욕 수건 200엔 · 샴푸 등 비치',
+          '캐리어는 프런트 보관 · 1개 500엔',
+        ],
+        map: ONSEN_MAP,
+        guide: ONSEN_GUIDE,
+      },
     ],
   },
 ];

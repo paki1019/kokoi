@@ -225,6 +225,20 @@ function renderDays() {
               </div>` : ''}
             </li>`).join('')}
         </ol>
+        ${d.info ? `
+        <h3>정보</h3>
+        ${d.info.map((p) => `
+          <details class="place">
+            <summary class="place__head">
+              <span class="place__title">${esc(p.title)}</span>
+              ${p.tag ? `<span class="place__tag${p.tag === '확정' ? ' is-fixed' : ''}">${esc(p.tag)}</span>` : ''}
+              <span class="links">
+                ${p.map ? `<a href="${esc(p.map)}" target="_blank" rel="noopener" aria-label="지도" title="지도">📍</a>` : ''}
+                ${p.guide ? `<a href="${esc(p.guide)}" target="_blank" rel="noopener" aria-label="가이드" title="가이드">📖</a>` : ''}
+              </span>
+            </summary>
+            <ul class="guide">${p.lines.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>
+          </details>`).join('')}` : ''}
       </section>`);
   });
 }
