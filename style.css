@@ -321,6 +321,24 @@ main {
   line-height: 1;
 }
 
+/* 날짜별 식사: 끼니별 후보 */
+.meal {
+  font-size: 15px;
+  margin: 14px 0 6px;
+  scroll-margin-top: 60px;
+}
+.meal-jump {
+  display: block;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 /* 날짜별 정보: 그날 방문할 곳 */
 .place {
   margin-bottom: 8px;
@@ -368,6 +386,12 @@ main {
   background: var(--accent-soft);
   color: var(--accent);
 }
+.place__tag.is-strong {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
 .place .links {
   display: flex;
   gap: 6px;
@@ -385,6 +409,80 @@ main {
   font-size: 14px;
   line-height: 1;
 }
+
+/* 동선 지도 */
+.daymap {
+  margin-bottom: 12px;
+  scroll-margin-top: 60px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.daymap summary {
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.daymap__map {
+  height: 320px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+}
+.daymap .hint {
+  margin: 0;
+  padding: 8px 12px;
+}
+.daymap__all,
+.daymap__far {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+}
+.pin {
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.pin-no {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #c0392b;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  vertical-align: 1px;
+}
+
+.kind {
+  display: inline-block;
+  width: 22px;
+  margin-right: 4px;
+  font-size: 14px;
+}
+.legend { margin-top: -6px; }
+
+.pin--move,
+.pin-no--move { background: #3b4a5a; }
 
 /* checklist */
 .pack-group { margin-bottom: 8px; }
